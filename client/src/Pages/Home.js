@@ -5,11 +5,11 @@ import jobtracker from '../assets/Images/jobtracker.jpg';
 
 const Home = () => {
   return (
-    <div className='container mx-auto p-6 h-screen grid bg-slate-100 font-serif '>
+    <div className=' mx-auto p-6 min-h-screen w-full overflow-x-hidden grid bg-slate-100 font-serif '>
       <nav className='text-blue-500 font-extrabold text-2xl'>
          JobTracker
       </nav>
-      <div className='container flex flex-col justify-center  items-center overflow-hidden sm:grid grid-cols-2 '>
+      <div className='flex flex-col   items-center  sm:grid grid-cols-2 '>
         <div className='max-w-xl space-y-4'>
            <h1 className='text-5xl'>Job<span className='text-blue-300'>Trackr</span></h1>
            <p className='text-xl'>With JobTracker, say goodbye to the hassle of managing multiple spreadsheets or notes. Focus on what
@@ -21,7 +21,7 @@ const Home = () => {
            </div>
         </div>
         <div>
-          <img src={jobtracker} alt=""  className='sm:block hidden w-9/12 h-9/12' />
+          <img src={jobtracker} alt=""  className=' hidden  w-9/12 h-9/12 sm:block ' />
           {/* <jobtracker/> */}
         </div>
       </div>
