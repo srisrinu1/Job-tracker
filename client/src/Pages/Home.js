@@ -15,7 +15,7 @@ const Home = () => {
            <p className='text-xl'>With JobTracker, say goodbye to the hassle of managing multiple spreadsheets or notes. Focus on what
            truly matters - landing your ideal job.Experience the efficiency, convenience, and confidence that JobTracker brings to your job search journey.</p>
            <div>
-           <Link to="/register" type="button" className='bg-blue-400 rounded-lg inline-block p-4'>
+           <Link to="/register" type="button" className='bg-blue-400 rounded-md inline-block p-3 px-4 text-blue-50'>
             Login/Register
            </Link>
            </div>
