@@ -5,7 +5,7 @@ import jobtracker from '../assets/Images/jobtracker.jpg';
 
 const Home = () => {
   return (
-    <div className='container mx-auto p-6 h-screen grid bg-slate-100 font-serif '>
+    <div className=' mx-auto p-6 h-screen w-screen grid bg-slate-100 font-serif '>
       <nav className='text-blue-500 font-extrabold text-2xl'>
          JobTracker
       </nav>
