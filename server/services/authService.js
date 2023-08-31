@@ -7,8 +7,17 @@ module.exports={
     //@route /api/user/register
     //@access public
     registerUser:async function(data){
+
        return await User.create(data);
+
+
     },
+    findUser:async function(data){
+      const {name}=data;
+      const userAvailable=await User.findOne({name});
+      return userAvailable
+    },
+
     //@desc login into the account
     //@route /api/user/login
     //@access public
