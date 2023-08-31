@@ -16,10 +16,14 @@ const register=asyncHandler(async(req,res,next)=>{
             success:true,
             message:'User is registered',
             data:user
-        })
+        });
+        // next();
      }
+     else{
      res.status(409);
-     throw new Error("User already exists!")
+     throw new Error("User already exists!");
+     }
+     next();
 
 
 });
