@@ -1,5 +1,6 @@
 const asyncHandler=require('express-async-handler');
 const authService=require('../../services/authService');
+const User=require('../../models/userModel');
 
 
 const register=asyncHandler(async(req,res,next)=>{
@@ -12,12 +13,14 @@ const register=asyncHandler(async(req,res,next)=>{
     console.log(!userAvailable);
     if(!userAvailable){
         const user=await authService.registerUser({name,email,password,role});
+        const token=await user.getJWT();
         res.status(201).json({
             success:true,
             message:'User is registered',
-            data:user
+            data:user,
+            token
         });
-        // next();
+
      }
      else{
      res.status(409);
