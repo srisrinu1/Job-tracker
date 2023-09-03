@@ -1,6 +1,7 @@
 const asyncHandler=require('express-async-handler');
 const authService=require('../../services/authService');
 const User=require('../../models/userModel');
+const sendToken=require('../../utils/jwtToken');
 
 
 const register=asyncHandler(async(req,res,next)=>{
@@ -12,24 +13,56 @@ const register=asyncHandler(async(req,res,next)=>{
     console.log("Line 11:",userAvailable);
     console.log(!userAvailable);
     if(!userAvailable){
-        const user=await authService.registerUser({name,email,password,role});
-        const token=await user.getJWT();
-        res.status(201).json({
-            success:true,
-            message:'User is registered',
-            data:user,
-            token
-        });
+        const user = await authService.registerUser({ name, email, password, role });
+        sendToken(user, 201, res);
+
 
      }
      else{
      res.status(409);
-     throw new Error("User already exists!");
+     next(new Error("User already exists!"));
      }
-     next();
+
 
 
 });
 
-module.exports={register}
+const loginUser = asyncHandler(async (req, res, next) => {
+    const { email, password } = req.body;
+    const result = await authService.loginUser(email, password);
+    console.log(result);
+
+
+
+    if (result.success) {
+        const {user,statusCode}=result;
+        const isPasswordMatched=await user.validatePassword(password);
+        console.log(isPasswordMatched)
+        if(!isPasswordMatched){
+            res.status(400);
+        }
+        // const token=await user.getJWT();
+        // res.status(statusCode).json({
+        //     success:true,
+        //     message:'Successfully logged in',
+        //     token
+        // });
+        console.log("Line 55:",user)
+        sendToken(user,200,res)
+
+
+
+    } else{
+      res.status(result.statusCode);
+      next(new Error('Something went wrong!'))
+
+    }
+
+
+
+  });
+
+
+
+module.exports={register,loginUser}
 
