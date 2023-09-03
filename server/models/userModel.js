@@ -49,10 +49,15 @@ userSchema.pre('save',async function(){
 })
 
 //Generate JWT
-userSchema.methods.getJWT = function() {
-    return jwt.sign({ id : this._id}, process.env.JWT_SECRET, {
+userSchema.methods.getJWT =  function() {
+    return  jwt.sign({ id : this._id}, process.env.JWT_SECRET, {
         expiresIn : process.env.JWT_EXPIRY_TIME
     });
+}
+
+//Compare user password with DB password
+userSchema.methods.validatePassword=async function(enteredPassword){
+  return await bcrypt.compare(enteredPassword,this.password)
 }
 
 module.exports=mongoose.model('User',userSchema)
