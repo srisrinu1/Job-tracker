@@ -4,7 +4,7 @@ const User = require('../models/userModel');
 module.exports={
 
     //@desc Register a new user
-    //@route /api/user/register
+    //@route /api/users/register
     //@access public
     registerUser:async function(data){
 
@@ -19,9 +19,33 @@ module.exports={
     },
 
     //@desc login into the account
-    //@route /api/user/login
+    //@route /api/users/login
     //@access public
-    loginUser:async function(data){
+    loginUser:async(email,password)=>{
+      if(!email || !password){
+        return {
+          success:false,
+          message:'Both email and password is required',
+          statusCode:400
+
+        }
+      }
+
+        const user=await User.findOne({email}).select('+password');
+        if(!user){
+          return {
+            success:false,
+            message:'Invalid credentials',
+            statusCode:401,
+
+          }
+        }
+        return {
+          success:true,
+          message:'user found!',
+          statusCode:200,
+          user
+        }
 
      },
     logoutUser:async function(data){
