@@ -1,7 +1,7 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "server.js",
   "dependencies": {
     "@vercel/node": "^2.15.3",
     "bcrypt": "^5.1.1",
