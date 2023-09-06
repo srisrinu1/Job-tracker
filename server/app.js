@@ -13,6 +13,8 @@ const DNS_SERVERS = process.env.DNS_SERVERS;
 
 // Set the DNS servers
 dns.setServers(DNS_SERVERS.split(','));
+const ipAddress = dns.resolve("https://concerned-slug-top-hat.cyclic.cloud/");
+console.log(ipAddress)
 
 
 app.use('/',indexRouter);
