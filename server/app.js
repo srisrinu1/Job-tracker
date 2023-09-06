@@ -19,7 +19,7 @@ console.log(ipAddress)
 
 app.use('/',indexRouter);
 app.get('/test',(req,res)=>{
-    res.send(Testing!)
+    res.send("Testing!")
 })
 app.use(errorHandler)
 
