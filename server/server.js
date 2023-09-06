@@ -36,6 +36,12 @@ const server=http.createServer(app);
 // app.listen(PORT,()=>{
 //     console.log(`Listening on port ${PORT}`);
 // })
-server.listen(PORT,()=>{
-    console.log(`Listening on port ${PORT}`);
+
+ConnectToDb().then(()=>{
+    server.listen(PORT,()=>{
+        console.log(`Listening on port ${PORT}`);
+    })
 })
+// server.listen(PORT,()=>{
+//     console.log(`Listening on port ${PORT}`);
+// })
