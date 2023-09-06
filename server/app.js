@@ -18,6 +18,9 @@ console.log(ipAddress)
 
 
 app.use('/',indexRouter);
+app.get('/test',(req,res)=>{
+    res.send(Testing!)
+})
 app.use(errorHandler)
 
 module.exports=app;
