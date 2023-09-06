@@ -7,7 +7,8 @@ const errorHandler = require('./api/middlewares/errorHandler');
 
 app.use(express.json());
 app.use(cors())
-app.use(dnsServer.setDnsServer);
+// app.use(dnsServer.setDnsServer);
+app.set('dns', ['1.1.1.1', '1.0.0.1']);
 
 app.use('/',indexRouter);
 app.use(errorHandler)
