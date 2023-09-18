@@ -1,9 +1,12 @@
 import axios from 'axios';
+import dotenv from 'dotenv';
 import { getTokenFromCookie } from '../cookie-handler';
+
+dotenv.config();
 
 const Fetch=axios.create(
     {
-        baseURL:'https://concerned-slug-top-hat.cyclic.cloud/'
+        baseURL:process.env.BASE_URL
     }
 )
 
@@ -15,4 +18,5 @@ Fetch.interceptors.use=(config)=>{
  return config;
 
 }
+
 
