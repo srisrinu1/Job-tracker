@@ -6,5 +6,5 @@ export const getTokenFromCookie=()=>{
 }
 
 export const addToken=(token)=>{
-  Cookies.set('token',token,{expires:7})
+  Cookies.set('token',token,{expires:2})
 }
