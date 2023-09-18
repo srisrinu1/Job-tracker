@@ -4,3 +4,7 @@ export const getTokenFromCookie=()=>{
  const token=result?result:null;
  return token;
 }
+
+export const addToken=(token)=>{
+  Cookies.set('token',token,{expires:7})
+}
