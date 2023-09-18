@@ -19,4 +19,6 @@ Fetch.interceptors.use=(config)=>{
 
 }
 
+export default Fetch;
+
 
