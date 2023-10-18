@@ -31,6 +31,8 @@ const PORT=process.env.PORT || 5001;
 // console.log(register)
 
 const server=http.createServer(app);
+//Server Time out
+server.setTimeout(5000);
 
 
 // app.listen(PORT,()=>{
