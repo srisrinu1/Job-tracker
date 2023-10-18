@@ -12,7 +12,7 @@ const errorHandler = require('./api/middlewares/errorHandler');
 //setting .env file variables
 dotenv.config({path:'./.env'})
 const PORT=process.env.PORT || 5001;
-ConnectToDb();
+// ConnectToDb();
 
 
 
@@ -31,6 +31,8 @@ ConnectToDb();
 // console.log(register)
 
 const server=http.createServer(app);
+//Server Time out
+server.setTimeout(5000);
 
 
 // app.listen(PORT,()=>{
