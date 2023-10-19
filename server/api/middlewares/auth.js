@@ -7,15 +7,19 @@ module.exports={
      let token;
      if(req.headers.authorization && req.headers.authorization.startsWith('Bearer')){
         token=req.headers.authorization.split(' ')[1];
-        if(!token){
+        console.log('Line 10:',token);
+     }
+    if(!token){
             res.status(401);
             next(new Error('Login to the website first!'))
-        }
+    }
+    else if(token.length>0){
         const decoded=jwt.verify(token,process.env.JWT_SECRET);
         console.log("Line 15:",decoded)
         req.user=await User.findById(decoded.id);
         console.log("Line 16:",req.user)
         next();
+    }
      }
-    })
+    )
 }
