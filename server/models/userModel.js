@@ -1,23 +1,35 @@
 const mongoose=require('mongoose');
 const bcrypt=require('bcrypt');
 const jwt=require('jsonwebtoken');
+const validator = require('validator');
 require('dotenv').config();
 
 const userSchema=mongoose.Schema({
     name:{
         type:String,
         required:[true,"Please enter the username"],
+        trim:true
 
     },
     email:{
         type:String,
-        required:[true,"Please enter the email"]
+        required:[true,"Please enter the email"],
+        unique:true,
+        lowercase:true,
+        trim:true,
+        validate: (value) => {
+            if (!validator.isEmail(value)) {
+                throw new Error('Invalid email')
+            }
+        }
     },
     password:{
         type:String,
         required:[true,"Please enter the password"],
         minlength:[8,'Your password must have atleast 8 characters'],
-        select:false
+        trim:true,
+        select:false,
+        private:true
     },
     role:{
         type:String,
@@ -29,23 +41,36 @@ const userSchema=mongoose.Schema({
         required:[true,'Please select the role that is required'],
         default:'user'
     },
-    createdAt:{
-        type:Date,
-        immutable:true,
-        default:Date.now
-    },
     resetPasswordToken:{
         type:String
     },
     resetPasswordExpire:{
         type:Date
+    },
+    isEmailVerified:{
+        type:Boolean,
+        default:false
     }
+},
+    {
+        timestamps:true
+    }
+);
 
-});
+//Check if email is already registered
+userSchema.statics.isEmailRegistered=async function(email){
+    
+    const user=await this.findOne({email,_id:{$ne:this._id}});
+    return user?true:false;
+
+}
 
 //Encrypt Password before saving
 userSchema.pre('save',async function(){
-    this.password=await bcrypt.hash(this.password,10)
+    const user=this;
+    if(user.isModified('password')){
+        user.password=await bcrypt.hash(user.password,10)
+    }
 })
 
 //Generate JWT

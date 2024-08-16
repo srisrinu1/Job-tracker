@@ -1,57 +1,36 @@
+const httpStatus=require('http-status');
 const asyncHandler=require('express-async-handler');
 const User = require('../models/userModel');
-
-module.exports={
-
-    //@desc Register a new user
-    //@route /api/users/register
-    //@access public
-    registerUser:async function(data){
-
-       return await User.create(data);
+const userService=require('../services/userService');
+const APIError=require('../utils/APIError');
 
 
-    },
-    findUser:async function(data){
-      const {name}=data;
-      const userAvailable=await User.findOne({name});
-      return userAvailable
-    },
-
-    //@desc login into the account
-    //@route /api/users/login
-    //@access public
-    loginUser:async(email,password)=>{
-      if(!email || !password){
-        return {
-          success:false,
-          message:'Both email and password is required',
-          statusCode:400
-
-        }
+//@desc login into the account
+//@route /api/users/login
+//@access public
+const loginUserWithEmailAndPassword=asyncHandler(async(email,password)=>{
+      const user=await userService.getUserByEmail(email);
+      if(!user ||(await user.validatePassword(password))){
+        throw new APIError(httpStatus.UNAUTHORIZED,'Invalid credentials');
+      }
+      return {
+        success:true,
+        user
       }
 
-        const user=await User.findOne({email}).select('+password');
-        if(!user){
-          return {
-            success:false,
-            message:'Invalid credentials',
-            statusCode:401,
 
-          }
-        }
-        return {
-          success:true,
-          message:'user found!',
-          statusCode:200,
-          user
-        }
+});
 
-     },
-    logoutUser:async function(data){
+//@desc logout from the account
+//@route /api/users/logout
+//@access private
+const logoutUser=asyncHandler(async()=>{
 
-     },
-    resetPassword:async function(data){
+})
 
-     },
+
+
+module.exports={ 
+  loginUserWithEmailAndPassword,
+  logoutUser
 }
