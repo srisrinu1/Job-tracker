@@ -56,5 +56,6 @@ const refreshAuth=asyncHandler(async(refreshToken)=>{
 
 module.exports={ 
   loginUserWithEmailAndPassword,
-  logoutUser
+  logoutUser,
+  refreshAuth
 }
