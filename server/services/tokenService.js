@@ -1,6 +1,17 @@
 const jwt=require('jsonwebtoken');
 const moment = require('moment');
+const Token=require('../models/tokenModel');
+const config=require('../config/config');
 
+
+
+//Generate JWT token
+ //id: User id
+ //expires: expiration date
+ //type: token type (e.g., access, refresh)
+ //secret: JWT secret
+ //default: JWT secret from config.js
+ //returns: JWT token string
 const generateJWT=(id,expires,type,secret=jwt.secret)=>{
     const payload={
         sub:id,
@@ -11,6 +22,48 @@ const generateJWT=(id,expires,type,secret=jwt.secret)=>{
     return jwt.sign(payload,secret);
 }
 
+//Saving refresh token to database
+ //token: JWT token string
+ //userId: User id
+ //type: token type (e.g., access, refresh)
+ //blacklisted: optional, default: false
+ //returns: Promise<Token>
+ //throws: Error if token already exists in the database
+const saveToken=(token,userId,type,blacklisted=false)=>{
+    const newToken=new Token({
+        token,
+        user:userId,
+        type,
+        expires:expires.toDate(),
+        blacklisted
+    });
+    return newToken.save();
+    }
+
+
+//Generating access and refresh tokens
+//user: User object
+const generateAuthTokens=async(user)=>{
+    const accessTokenExpires=moment().add(config.jwt.accessTokenExpires,'minutes');
+    const refreshTokenExpires=moment().add(config.jwt.refreshExpirationDays,'days');
+    const accessToken=generateJWT(user.id,accessTokenExpires,tokenTypes.ACCESS);
+    const refreshToken=generateJWT(user.id,refreshTokenExpires,tokenTypes.REFRESH);
+    await saveToken(refreshToken,user.id,tokenTypes.REFRESH);
+    return {
+        access:{
+            token:accessToken,
+            expires:accessTokenExpires.toDate()
+        },
+        refresh:{
+            token:refreshToken,
+            expires:refreshTokenExpires.toDate()
+        }
+    }
+
+}
+
 module.exports={
-    generateJWT
+    generateJWT,
+    saveToken,
+    generateAuthToken
 }

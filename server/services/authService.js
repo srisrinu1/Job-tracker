@@ -24,8 +24,12 @@ const loginUserWithEmailAndPassword=asyncHandler(async(email,password)=>{
 //@desc logout from the account
 //@route /api/users/logout
 //@access private
-const logoutUser=asyncHandler(async()=>{
-
+const logoutUser=asyncHandler(async(refreshToken)=>{
+    const refreshToken=await Token.findOne({token:refreshToken,type: tokenTypes.REFRESH, blacklisted: false });
+    if(!refreshToken){
+      throw new APIError(httpStatus.INTERNAL_SERVER_ERROR,'Invalid refresh token');
+    }
+    await refreshToken.remove();
 })
 
 
