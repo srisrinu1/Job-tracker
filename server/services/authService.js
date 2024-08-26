@@ -3,7 +3,7 @@ const asyncHandler=require('express-async-handler');
 const User = require('../models/userModel');
 const userService=require('../services/userService');
 const APIError=require('../utils/APIError');
-const tokenTypes=require('../config/token');
+const {tokenTypes}=require('../config/token');
 
 
 //@desc login into the account
