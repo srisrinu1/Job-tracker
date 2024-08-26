@@ -16,8 +16,9 @@ const passwordValidator=(value,helpers)=>{
 
 //Validate the userId mongo 
 const ObjectId=(value,helpers)=>{
-  if (!value.match(/^[0-9a-fA-F]{24}$/)) {
-    return helpers.message('"{{#label}}" must be a valid mongo id');
+  const objectIdPattern = /^[a-fA-F0-9]{24}$/;
+  if (objectIdPattern.test(value)) {
+    return helpers.message('"{{#label}}" must be a valid MongoDB ObjectId');
   }
   return value;
 }
