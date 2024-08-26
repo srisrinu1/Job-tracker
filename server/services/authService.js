@@ -3,6 +3,7 @@ const asyncHandler=require('express-async-handler');
 const User = require('../models/userModel');
 const userService=require('../services/userService');
 const APIError=require('../utils/APIError');
+const tokenTypes=require('../config/token');
 
 
 //@desc login into the account
@@ -25,11 +26,11 @@ const loginUserWithEmailAndPassword=asyncHandler(async(email,password)=>{
 //@route /api/users/logout
 //@access private
 const logoutUser=asyncHandler(async(refreshToken)=>{
-    const refreshToken=await Token.findOne({token:refreshToken,type: tokenTypes.REFRESH, blacklisted: false });
-    if(!refreshToken){
+    const tokenDocument=await Token.findOne({token:refreshToken,type: tokenTypes.REFRESH, blacklisted: false });
+    if(!tokenDocument){
       throw new APIError(httpStatus.INTERNAL_SERVER_ERROR,'Invalid refresh token');
     }
-    await refreshToken.remove();
+    await tokenDocument.remove();
 });
 
 //@desc refresh the auth tokens
