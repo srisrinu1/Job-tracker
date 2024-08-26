@@ -11,7 +11,7 @@ const createUser=asyncHandler(async(userBody)=>{
     if(await User.isEmailRegistered(userBody.email)){
         throw new APIError(httpStatus.CONFLICT,'Email already registered');
     }
-    return User.Create(userBody);
+    return User.create(userBody);
 
 });
 
