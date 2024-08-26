@@ -1,8 +1,21 @@
 const express=require('express');
+const authRoute=require('./auth');
 const app=express();
+const router = express.Router();
 
-app.use('/api/users',require('./auth'));
-app.use('/api/jobs',require('./jobs'));
-app.use('/api/test',require('./test'));
+const defaultRoutes=[
+    {
+        path:'/api/auth',
+        method:'GET',
+        route:authRoute
+        
+    }
+]
 
-module.exports=app;
+
+
+defaultRoutes.forEach((route) => {
+    router.use(route.path, route.route);
+  });
+
+module.exports=router;

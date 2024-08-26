@@ -1,6 +1,6 @@
-const authService=require('./services/authService');
-const userService=require('./services/userService');
-const tokenService=require('./services/tokenService');
+const authService=require('./authService');
+const userService=require('./userService');
+const tokenService=require('./tokenService');
 module.exports={
     authService,
     userService,

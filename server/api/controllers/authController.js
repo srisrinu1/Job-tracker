@@ -1,9 +1,8 @@
 const asyncHandler=require('express-async-handler');
 const httpStatus=require('http-status');
-const authService=require('../../services');
 const User=require('../../models/userModel');
 const sendToken=require('../../utils/jwtToken');
-const {authService,userService}=require('../../services');
+const {authService,userService,tokenService}=require('../../services');
 
 //Register a new user
 const register=asyncHandler(async(req,res,next)=>{

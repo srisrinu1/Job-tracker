@@ -1,10 +1,12 @@
-const {strategy:JwtStrategy,ExtractJwt}=require('passport-jwt');
-const config=require('./config/config');
-const {User}=require('./models/');
-const {tokenTypes}=require('./tokens');
-const APIError=require('./errors/apiError');
+const {Strategy:JwtStrategy,ExtractJwt}=require('passport-jwt');
+const config=require('./config');
+const {User}=require('../models');
+const {tokenTypes}=require('./token');
+const APIError=require('../../server/utils/APIError');
+
+console.log(config.jwt.secret);
 const jwtOptions={
-    secretorKey:config.jwt.secret,
+    secretOrKey:config.jwt.secret,
     jwtFromRequest:ExtractJwt.fromAuthHeaderAsBearerToken()
 }
 
@@ -26,7 +28,7 @@ catch(error){
 }
 
 }
-const jwtStrategy=new strategy(jwtOptions,jwtVerify);
+const jwtStrategy=new JwtStrategy(jwtOptions,jwtVerify);
 
 module.exports={
     jwtStrategy
