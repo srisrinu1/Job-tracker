@@ -19,14 +19,10 @@ const register=asyncHandler(async(req,res,next)=>{
 
 //Login a user with email and password
 const loginUser = asyncHandler(async (req, res, next) => {
-    const { email, password } = req.body;
-    const user = await authService.loginUserWithEmailAndPassword(email, password);
-    const tokens=await tokenService.generateAuthTokens(user);
-    res.send({
-      success:true,
-      user,
-      tokens
-    })
+  const { email, password } = req.body;
+  const user = await authService.loginUserWithEmailAndPassword(email, password);
+  const tokens = await tokenService.generateAuthTokens(user);
+  res.send({ user, tokens });
   });
 
 //Logout a user
@@ -40,7 +36,15 @@ const refreshTokens=asyncHandler(async(req,res)=>{
   const tokens=await authService.refreshAuth(req.body.refreshToken);
   res.send({...tokens});
 
-})
+});
+
+
+module.exports={
+  register,
+  loginUser,
+  logoutUser,
+  refreshTokens};
+
 
 
   
