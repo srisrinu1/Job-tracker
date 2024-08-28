@@ -81,8 +81,10 @@ userSchema.methods.getJWT =  function() {
 }
 
 //Compare user password with DB password
-userSchema.methods.validatePassword=async function(enteredPassword){
-  return await bcrypt.compare(enteredPassword,this.password)
+userSchema.methods.validatePassword=async function(password){
+    const user = this;
+    console.log(user);
+    return bcrypt.compare(password, user.password);
 }
 
 module.exports=mongoose.model('User',userSchema)
