@@ -2,6 +2,7 @@ const express=require('express');
 const app=express();
 const cors=require('cors');
 const passport=require('passport');
+const httpStatus=require('http-status');
 // const indexRouter=require('./api/routes/index');
 // const dnsServer=require('./utils/dns-server');
 const routes=require('./api/routes');
