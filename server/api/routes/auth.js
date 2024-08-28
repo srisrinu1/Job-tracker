@@ -10,7 +10,7 @@ const authController=require('../controllers/authController');
 
 
 router.post('/register',validate(authValidation.register),authController.register);
-router.post('/login',loginUser)
+router.post('/login',validate(authValidation.login),authController.loginUser);
 
 module.exports=router;
 

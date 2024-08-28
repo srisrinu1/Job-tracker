@@ -17,7 +17,7 @@ const createUser=asyncHandler(async(userBody)=>{
 
 //Retreive user by email
 const getUserByEmail=asyncHandler(async(email)=>{
-    return await User.findOne({email});
+    return User.findOne({ email }).select('+password');;
 });
 
 //Retreive user by id

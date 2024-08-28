@@ -10,14 +10,11 @@ const {tokenTypes}=require('../config/token');
 //@route /api/users/login
 //@access public
 const loginUserWithEmailAndPassword=asyncHandler(async(email,password)=>{
-      const user=await userService.getUserByEmail(email);
-      if(!user ||(await user.validatePassword(password))){
-        throw new APIError(httpStatus.UNAUTHORIZED,'Invalid credentials');
-      }
-      return {
-        success:true,
-        user
-      }
+  const user = await userService.getUserByEmail(email);
+  if (!user || !(await user.validatePassword(password))) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect email or password');
+  }
+  return user;
 
 
 });

@@ -8,6 +8,21 @@ const register={
     })
 }
 
+const login={
+    body:joi.object().keys({
+        email:joi.string().required().email(),
+        password:joi.string().required().custom(passwordValidator)
+    })
+}
+
+const logout={
+    body:joi.object().keys({
+        refreshAuthToken:joi.string().required()
+    })
+}
+
 module.exports={
-    register
+    register,
+    login,
+    logout
 }
