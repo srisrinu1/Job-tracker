@@ -22,7 +22,19 @@ const loginUser = asyncHandler(async (req, res, next) => {
   const { email, password } = req.body;
   const user = await authService.loginUserWithEmailAndPassword(email, password);
   const tokens = await tokenService.generateAuthTokens(user);
-  res.send({ user, tokens });
+  res.cookie('accessToken',tokens.access.token,{
+    httpOnly: true,
+      secure: true,
+      maxAge:tokens.access.expires.getTime()-Date.now(),
+      sameSite:'strict'
+  }).
+  cookie('refreshToken',tokens.refresh.token,{
+        httpOnly: true,
+        secure:true,
+        maxAge:tokens.refresh.expires.getTime()-Date.now(),
+        sameSite:'strict'
+      })
+  res.send({ user});
   });
 
 //Logout a user
