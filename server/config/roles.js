@@ -1,6 +1,6 @@
 const allRoles={
-    user:[
-        'createUserProfile',
+    user: [
+        'createProfile',
         'updateProfile',
         'uploadResume',
         'applyForJobs',
@@ -8,33 +8,16 @@ const allRoles={
         'receiveNotifications',
         'setInterviewReminders',
         'communicateWithRecruiters',
-
-    ],
-    recruiter:[
-        'postJobListings',
-        'browseProfiles',
-        'shortlistCandidates',
-        'scheduleInterviews',
-        'sendNotifications',
-        'communicateWithJobSeekers',
-        'viewJobReports',
-
-    ],
-    hiringManager:[
-    'reviewShortlistedCandidates',
-    'makeHiringDecisions',
-    'scheduleAndManageInterviews',
-    'updateApplicationStatus',
-    'collaborateWithRecruiters',
-    ],
-    admin:[
-        'manageUserAccounts',
+      ],
+      admin: [
+        'getUsers',
+        'manageUsers',
         'manageJobPostings',
         'accessSystemSettings',
         'generateReports',
         'handleGlobalNotifications',
         'manageAccessControl',
-    ]
+      ],
 }
 
 const roles=Object.keys(allRoles);
