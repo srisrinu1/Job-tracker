@@ -4,32 +4,42 @@ const {User}=require('../models');
 const {tokenTypes}=require('./token');
 const APIError=require('../../server/utils/APIError');
 
-console.log(config.jwt.secret);
-const jwtOptions={
-    secretOrKey:config.jwt.secret,
-    jwtFromRequest:ExtractJwt.fromAuthHeaderAsBearerToken()
+console.log("Line7:",config.jwt.secret);
+const cookieOrHeaderExtractor=(req)=>{
+  let token=null;
+  //Check if token is in the httpOny cookie
+  if(req && req.cookies && req.cookies.accessToken){
+    token=req.cookies.accessToken;
+  }
+  //Check if token is in the Authorization header
+  if(!token && req.headers.authorization &&  req.headers.authorization.startsWith('Bearer ')){
+    token=req.headers.authorization.split(' ')[1];
+  }
+  return token;
+
 }
-
-const jwtVerify=async(jwtPayload)=>{
-    //Check if user exists in the database
-
-    try{
-    if(jwtPayload.type!==tokenTypes.ACCESS){
-       throw new Error('Invalid token type');
+const jwtOptions = {
+    secretOrKey: config.jwt.secret,
+    jwtFromRequest:cookieOrHeaderExtractor,
+  };
+  
+  const jwtVerify = async (payload, done) => {
+    try {
+      if (payload.type !== tokenTypes.ACCESS) {
+        throw new Error('Invalid token type');
+      }
+      const user = await User.findById(payload.sub);
+      if (!user) {
+        return done(null, false);
+      }
+      done(null, user);
+    } catch (error) {
+      done(error, false);
     }
-    const user=await  User.findOne(jwtPayload.sub);
-    if(!user){
-        return done(null,false);
-    }
-    done(null,user);
-}
-catch(error){
-    done(error,false)
-}
-
-}
-const jwtStrategy=new JwtStrategy(jwtOptions,jwtVerify);
-
-module.exports={
-    jwtStrategy
-}
+  };
+  
+  const jwtStrategy = new JwtStrategy(jwtOptions, jwtVerify);
+  
+  module.exports = {
+    jwtStrategy,
+  };
