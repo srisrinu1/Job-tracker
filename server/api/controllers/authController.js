@@ -22,18 +22,26 @@ const loginUser = asyncHandler(async (req, res, next) => {
   const { email, password } = req.body;
   const user = await authService.loginUserWithEmailAndPassword(email, password);
   const tokens = await tokenService.generateAuthTokens(user);
+  console.log(tokens.access,tokens.refresh)
+ 
   res.cookie('accessToken',tokens.access.token,{
     httpOnly: true,
-      secure: true,
+      secure: false,
       maxAge:tokens.access.expires.getTime()-Date.now(),
-      sameSite:'strict'
+      sameSite:'strict',
+      path: '/'
+      
+
   }).
   cookie('refreshToken',tokens.refresh.token,{
-        httpOnly: true,
-        secure:true,
-        maxAge:tokens.refresh.expires.getTime()-Date.now(),
-        sameSite:'strict'
-      })
+    httpOnly: true,
+    secure:false,
+    maxAge:tokens.refresh.expires.getTime()-Date.now(),
+    sameSite:'none',
+    path: '/'
+    
+  })
+  console.log(res.getHeaders())
   res.send({ user});
   });
 

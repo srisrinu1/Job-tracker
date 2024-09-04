@@ -1,5 +1,6 @@
 const express=require('express');
 const authRoute=require('./auth');
+const testRoute=require('./test');
 const app=express();
 const router = express.Router();
 
@@ -9,7 +10,13 @@ const defaultRoutes=[
         method:'GET',
         route:authRoute
         
+    },
+    {
+        path:'/api/test',
+        method:'POST',
+        route:testRoute
     }
+   
 ]
 
 
