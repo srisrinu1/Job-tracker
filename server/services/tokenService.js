@@ -45,8 +45,9 @@ const saveToken=(token,userId,expires,type,blacklisted=false)=>{
 //user: User object
 
 const generateAuthTokens=async(user)=>{
-    const accessTokenExpires=moment().add(config.jwt.accessTokenExpires,'minutes');
-    const refreshTokenExpires=moment().add(config.jwt.refreshExpirationDays,'days');
+    const accessTokenExpires=moment().add(config.jwt.accessExpirationMinutes,'m');
+    const refreshTokenExpires=moment().add(config.jwt.refreshExpirationDays,'d');
+    console.log("From Token Service:",accessTokenExpires, refreshTokenExpires)
     const accessToken=generateJWT(user.id,accessTokenExpires,tokenTypes.ACCESS);
     const refreshToken=generateJWT(user.id,refreshTokenExpires,tokenTypes.REFRESH);
     await saveToken(refreshToken, user.id, refreshTokenExpires, tokenTypes.REFRESH);
