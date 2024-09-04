@@ -29,21 +29,21 @@ const PORT=process.env.PORT || 5001;
 // app.use(errorHandler);
 
 // console.log(register)
-
+ConnectToDb().then(()=>{
+    server.listen(PORT,()=>{
+        console.log(`Listening on port ${PORT}`);
+    })
+})
 const server=http.createServer(app);
 //Server Time out
-server.setTimeout(5000);
+// server.setTimeout(5000);
 
 
 // app.listen(PORT,()=>{
 //     console.log(`Listening on port ${PORT}`);
 // })
 
-ConnectToDb().then(()=>{
-    server.listen(PORT,()=>{
-        console.log(`Listening on port ${PORT}`);
-    })
-})
+
 // server.listen(PORT,()=>{
 //     console.log(`Listening on port ${PORT}`);
 // })
