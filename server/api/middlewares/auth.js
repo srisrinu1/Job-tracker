@@ -1,25 +1,29 @@
-const jwt=require('jsonwebtoken');
-const asyncHandler=require('express-async-handler');
-const User=require('../../models/userModel');
+const passport=require('passport');
+const httpStatus=require('http-status');
+const APIError = require('../../utils/APIError');
+const { roleRights } = require('../../config/roles'); 
 
-module.exports={
-    validateAuthentication:asyncHandler(async(req,res,next)=>{
-     let token;
-     if(req.headers.authorization && req.headers.authorization.startsWith('Bearer')){
-        token=req.headers.authorization.split(' ')[1];
-        console.log('Line 10:',token);
-     }
-    if(!token){
-            res.status(401);
-            next(new Error('Login to the website first!'))
+const verifyCallback=(req,resolve,reject,requiredRights)=>async(err,user,info)=>{
+    if(err || info || !user){
+        return reject(new APIError(httpStatus.UNAUTHORIZED, 'Please authenticate'));
     }
-    else if(token.length>0){
-        const decoded=jwt.verify(token,process.env.JWT_SECRET);
-        console.log("Line 15:",decoded)
-        req.user=await User.findById(decoded.id);
-        console.log("Line 16:",req.user)
-        next();
+    req.user=user;
+    if(requiredRights.length){
+        const userRights=roleRights.get(user.role);
+        const hasRequiredRights=requiredRights.every((requiredRight)=>userRights.includes(requiredRight));
+        if(!hasRequiredRights && req.params.userId!==user.id){
+            return reject(new APIError(httpStatus.FORBIDDEN, 'You are not authorized to perform this action'));
+        }
     }
-     }
-    )
+    resolve();
 }
+
+const auth=(...requiredRights)=>async(req,res,next)=>{
+    return new Promise((resolve,reject)=>{
+        passport.authenticate('jwt',{session:false},verifyCallback(req,resolve,reject,requiredRights))(req,res,next);
+    })
+    .then(()=>next())
+    .catch((err)=>next(err))
+}
+
+module.exports=auth;
